@@ -1,4 +1,5 @@
 package com.helloworld.helloworld;
+import com.helloworld.helloworld.health.TemplateHealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -25,6 +26,11 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
                 helloWorldConfiguration.getTemplate(),
                 helloWorldConfiguration.getDefaultName()
         );
+
+        final TemplateHealthCheck healthCheck = new TemplateHealthCheck(
+                helloWorldConfiguration.getTemplate()
+        );
+        environment.healthChecks().register("template", healthCheck);
         environment.jersey().register(helloWorldResource);
     }
 }
